@@ -1535,8 +1535,23 @@ export class EditorManager {
       alert('剪切板内容为空');
       return;
     }
+
     const json = reGenerateID(parse(this.clipboardData));
-    region ? this.addChild(id, region, json) : this.replaceChild(id, json);
+
+    if (region) {
+      this.addChild(id, region, json);
+      return;
+    }
+
+    if (this.replaceChild(id, json)) {
+      this.store.setContextId('');
+      requestAnimationFrame(() => {
+        this.store.highlightNodes.forEach(node => {
+          node.calculateHighlightBox();
+        });
+        this.buildPanels();
+      });
+    }
   }
 
   /**
