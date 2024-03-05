@@ -1545,7 +1545,7 @@ export class EditorManager {
 
     if (this.replaceChild(id, json)) {
       this.store.setContextId('');
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         this.store.highlightNodes.forEach(node => {
           node.calculateHighlightBox();
         });
